@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
+            font-family: 'Arial', sans-serif;
+            padding: 50px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(236, 72, 153, 0.2);
+        }
+
+        h1 {
+            color: #ec4899;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+
+        p {
+            text-align: center;
+            color: #be185d;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        h2 {
+            color: #db2777;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 2px solid #fbcfe8;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border: 2px solid #ec4899;
+            box-shadow: 0 0 10px rgba(236, 72, 153, 0.3);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        h3 {
+            text-align: center;
+            color: #ec4899;
+            margin-top: 20px;
+            font-size: 18px;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bmi-value {
+            font-size: 36px;
+            font-weight: bold;
+            color: #be185d;
+        }
+
+        .message {
+            font-size: 16px;
+            color: #db2777;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        .reference {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #fbcfe8;
+            font-size: 13px;
+            color: #be185d;
+        }
+
+        .reference h4 {
+            color: #ec4899;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .ref-item {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Find your BMI😎</h1>
+    <p>Open the browser console to see the outputs.</p>
+
+    <!-- BMI Input -->
+    <h2>Calculate Your BMI</h2>
+
+    <input type="number" id="weight" placeholder="Your weight in kgs💪">
+    <input type="number" id="height" placeholder="Your height in meters📏">
+
+    <br><br>
+
+    <button id="calcBtn">Calculate BMI</button>
+
+    <h3 id="result"></h3>
+    <div class="reference">
+            <h4>📊 BMI Reference</h4>
+            <div class="ref-item"><strong>Below 18.5:</strong> Underweight</div>
+            <div class="ref-item"><strong>18.5 - 24.9:</strong> Healthy / Normal</div>
+            <div class="ref-item"><strong>25.0 - 29.9:</strong> Overweight</div>
+            <div class="ref-item"><strong>30.0+:</strong> Obese</div>
+        </div>
+
+
+
+    <script>
+
+        // calculate BMI
+        function calculateBMI(weight, height) {
+            try {
+                return weight / (height * height);
+            }
+            catch (err) {
+                return err.message;
+            }
+        }
+
+        //  BMI category
+        function getBMICategory(bmi) {
+            try {
+                if (bmi < 18.5) {
+                    return "You're so delicate & light (underweight)! Make sure to nourish your body with love and good food! ❤️";
+                } else if (bmi >= 18.5 && bmi <= 24.9) {
+                    return "You're absolutely perfect(healthy/Normal Weight)! 👑 Keep that balance & love yourself always! 💖";
+                } else if (bmi >= 25.0 && bmi <= 29.9) {
+                    return " (I'm sorry you're overweight)but You're beautiful just the way you are! 🌸 Maybe time for some gentle exercise & self-care! 🧘‍♀️";
+                } else {
+                    return "Your wellness journey starts now ( you're obese)! 💗 You've got this! Let's be kind to our bodies! ✨";
+                }
+            }
+            catch (err) {
+                return err.message;
+            }
+        }
+
+        // BUTTON
+        document.getElementById("calcBtn").addEventListener("click", function () {
+
+            try {
+
+                let w = Number(document.getElementById("weight").value);
+                let h = Number(document.getElementById("height").value);
+
+                if (w <= 0 || h <= 0) {
+                    throw new Error("Please enter valid positive numbers");
+                }
+
+                let bmi = calculateBMI(w, h);
+                let category = getBMICategory(bmi);
+
+                document.getElementById("result").innerHTML =
+                    "BMI = " + bmi.toFixed(2) + " (" + category + ")";
+
+                console.log("Weight:", w);
+                console.log("Height:", h);
+                console.log("BMI:", bmi.toFixed(2));
+                console.log("Category:", category);
+
+            }
+            catch (err) {
+
+                document.getElementById("result").innerHTML =
+                    err.message;
+
+                console.log("Error:", err.message);
+
+            }
+
+        });
+
+    </script>
+
+</body>
+
+</html>
